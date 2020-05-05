@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="My To-Do List was created to help you with keeping deadlines and not to miss any important tasks!">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kalam&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet">
+    <title>My To-Do List</title>
+</head>
+
+<body>
+    <header class="header">
+        <div class="header__logo-data">
+            <h1 class="header__logo">My To-Do List</h1>
+            <span class="header__byme">By Anna Sviatelyk</span>
+        </div>
+        <div class="header__date-and-time">
+            <span class="header__data-label">Today</span>
+            <span class="header__data header__data--date">May 12, 2020</span>
+            <span class="header__data-label">Time</span>
+            <span class="header__data">21:30</span>
+        </div>
+    </header>
+
+    <div class="line"></div>
+    <!-- TASK ITEM -->
+    <div class="tasks-container">
+        <!-- <div class="task">
+            <div class="task__content-wrapper">
+                <div class="task__description">
+                    <div class="task__checkbox"></div>
+                    <span class="task__name">Send new project concept to Project Manager</span>
+                </div>
+
+                <div class="task__btns">
+                    <i class="task__btn-edit"></i>
+                    <i class="task__btn-delete"></i>
+                </div>
+            </div>
+            <div class="line"></div>
+        </div>  -->
+    </div>
+
+
+    <div class="new-item">
+        <i class="new-item__plus-icon"></i>
+        <span class="new-item__label">Add new task</span>
+    </div>
+
+    <!-- ADD NEW ITEM SECTION -->
+    <div class="add-new-item">
+        <div class="add-new-item__description-field">
+            <input type="text" class="add-new-item__description" placeholder="E.g. Start working on new project...">
+        </div>
+
+        <div class="add-new-item__buttons">
+            <button class="add-new-item__btn-add-task add-new-item__btn-add-task--disabled">Add task</button>
+            <button class="add-new-item__btn-cancel">Cancel</button>
+        </div>
+    </div>
+
+
+
+    <img src="images/illustration.svg" alt="time management illustration" class="illustration">
+</body>
+
+</html>
