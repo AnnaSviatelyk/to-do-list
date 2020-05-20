@@ -103,6 +103,7 @@
         border-width: 0;
         outline: none;
         width: 100%;
+        overflow: hidden;
 
         font-family: "Montserrat", sans-serif;
         font-size: 12px;
@@ -170,7 +171,17 @@
     }
 }
 
+.tasks-container {
+    max-width: 750px;
+    max-height: 500px;
+    overflow: auto;
+    margin-bottom: 24px;
+}
 .task {
+    &:last-of-type {
+        margin-bottom: 0;
+    }
+
     margin-bottom: 18px;
     width: 708px;
 
@@ -183,19 +194,19 @@
 
     &__content-wrapper {
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         justify-content: space-between;
-
         margin-bottom: 16px;
     }
 
     &__description {
         margin-left: 175px;
         display: flex;
-        align-items: center;
+        align-items: flex-start;
     }
 
     &__checkbox {
+        position: relative;
         width: 16px;
         height: 16px;
         border-radius: 50%;
@@ -204,9 +215,72 @@
         margin-right: 8px;
     }
 
+    &__checkbox_svg {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-45%, -60%);
+        width: 20px;
+    }
+
+    &__checkbox {
+        cursor: pointer;
+        user-select: none;
+        input {
+            display: none;
+        }
+    }
+
+    &__checkbox_line {
+        visibility: hidden;
+        fill: none;
+        stroke: #074b84;
+        stroke-width: 9;
+        stroke-miterlimit: 5;
+    }
+
+    &__checkbox [type="checkbox"]:checked + &__checkbox_svg &__checkbox_line {
+        visibility: visible;
+        stroke-dasharray: 1000;
+        stroke-dashoffset: 1000;
+        animation: checked 1s linear forwards;
+    }
+
+    @keyframes checked {
+        to {
+            stroke-dashoffset: 600;
+        }
+    }
+
     &__name {
+        overflow: hidden;
         font-family: "Montserrat", sans-serif;
         font-size: 14px;
+        line-height: 1.5;
+        max-width: 454px;
+        text-overflow: ellipsis;
+        word-wrap: break-word;
+        display: block;
+    }
+
+    &__edit-input-text {
+        display: block;
+        width: 454px;
+        height: auto;
+        overflow: hidden;
+
+        font-family: "Montserrat", sans-serif;
+        font-size: 14px;
+        line-height: 1.5;
+
+        border-radius: 3px;
+        border: 1px solid #f3f3f3;
+        padding: 8px 12px 8px 8px;
+        box-sizing: border-box;
+        outline: none;
+        resize: none;
+
+        background-color: #f3f3f340;
     }
 
     &__btns {
@@ -228,18 +302,12 @@
         &:hover {
             opacity: 0.7;
         }
-
-        &:hover {
-            &__hover {
-                display: block;
-            }
-        }
     }
 
     &__btn-delete {
-        width: 12px;
-        height: 12px;
-        background-image: url(images/icons/delete.svg);
+        width: 15px;
+        height: 15px;
+        background-image: url(images/icons/trash.svg);
         background-size: cover;
         background-repeat: no-repeat;
         cursor: pointer;
@@ -248,5 +316,39 @@
         &:hover {
             opacity: 0.7;
         }
+    }
+
+    &__btn-done {
+        width: 13px;
+        height: 13px;
+        background-image: url(images/icons/done.svg);
+        background-size: cover;
+        background-repeat: no-repeat;
+        cursor: pointer;
+        transition: all 0.3s;
+
+        margin-right: 8px;
+
+        &:hover {
+            opacity: 0.7;
+        }
+    }
+
+    &__btn-exit-edit {
+        width: 13px;
+        height: 13px;
+        background-image: url(images/icons/cancel.svg);
+        background-size: cover;
+        background-repeat: no-repeat;
+        cursor: pointer;
+        transition: all 0.3s;
+
+        &:hover {
+            opacity: 0.7;
+        }
+    }
+
+    .line:last-of-type {
+        margin-bottom: 0;
     }
 }

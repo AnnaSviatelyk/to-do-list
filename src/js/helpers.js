@@ -8,3 +8,25 @@ export function makeid(length = 5) {
     }
     return result;
 }
+
+
+export function getCurrentTime() {
+
+    const now = new Date();
+    const day = now.getDate();
+
+    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    const curMonth = now.getMonth();
+    const month = months[curMonth]
+    const year = now.getFullYear();
+    let hours = now.getHours();
+    hours = formatTime(hours);
+    let minutes = now.getMinutes();
+    minutes = formatTime(minutes);
+
+    return { day, month, year, hours, minutes }
+}
+
+function formatTime(time) {
+    return time < 10 ? `0${time}` : time;
+}

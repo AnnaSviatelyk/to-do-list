@@ -20,9 +20,9 @@
         </div>
         <div class="header__date-and-time">
             <span class="header__data-label">Today</span>
-            <span class="header__data header__data--date">May 12, 2020</span>
+            <span class="header__data header__data--date">May 10, 2020</span>
             <span class="header__data-label">Time</span>
-            <span class="header__data">21:30</span>
+            <span class="header__data header__data--time">21:30</span>
         </div>
     </header>
 
@@ -30,20 +30,28 @@
     <!-- TASK ITEM -->
     <div class="tasks-container">
         <!-- <div class="task">
-            <div class="task-hover"></div>
             <div class="task__content-wrapper">
                 <div class="task__description">
-                    <div class="task__checkbox"></div>
-                    <span class="task__name">Send new project concept to Project Manager</span>
-                </div>
 
-                <div class="task__btns">
-                    <i class="task__btn-edit"></i>
-                    <i class="task__btn-delete"></i>
-                </div>
-            </div>
-            <div class="line"></div>
-        </div>  -->
+                    <label class='task__checkbox'>
+                        <input type="checkbox" name="check">
+                        <svg version="1.1" class="task__checkbox_svg" xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 100 100"
+                            style="enable-background:new 0 0 100 100;" xml:space="preserve">
+                            <polyline class="task__checkbox_line" points="3.5,45.5 40.5,82.5 95.7,15.3 "
+                                stroke-linecap="round" /></svg>
+                    </label>
+
+                    <span class="task__name">Send new project concept to Project Manager</span> -->
+        <!-- </div>
+
+    <div class="task__btns">
+        <i class="task__btn-edit"></i>
+        <i class="task__btn-delete"></i>
+    </div>
+
+    <div class="line"></div> -->
+        <!-- </div> -->
     </div>
 
 
@@ -55,7 +63,7 @@
     <!-- ADD NEW ITEM SECTION -->
     <div class="add-new-item">
         <div class="add-new-item__description-field">
-            <input type="text" class="add-new-item__description" placeholder="E.g. Start working on new project...">
+            <input type="text" class="add-new-item__description" placeholder="E.g. Start working on new project..." />
         </div>
 
         <div class="add-new-item__buttons">
@@ -63,7 +71,6 @@
             <button class="add-new-item__btn-cancel">Cancel</button>
         </div>
     </div>
-
 
 
     <img src="images/illustration.svg" alt="time management illustration" class="illustration">
