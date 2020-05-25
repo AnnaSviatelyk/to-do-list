@@ -1,21 +1,28 @@
 import { DOMstrings } from './domStrings'
 import TasksController from './TasksController'
-import { autoResize } from './helpers'
 
 const doneExitBtns = `<i class="task__btn-done"></i>
 <i class="task__btn-exit-edit"></i>`
 const editDeleteBtns = `<i class="task__btn-edit"></i>
 <i class="task__btn-delete"></i>`
-const spanHeightWithOneLine = 34;
-const maxTextAreaHeight = 100;
+const spanHeightWithOneLine = 37
+const maxTextAreaHeight = 100
 
 
 class TaskView {
+    constructor() {
+        this.updateSummary = this.updateSummary.bind(this)
+        this.keyPressHandler = this.keyPressHandler.bind(this)
+        this.editBtnClickHandler = this.editBtnClickHandler.bind(this)
+        this.documentClickHandler = this.documentClickHandler.bind(this)
+        this.clickOnExitBtnHandler = this.clickOnExitBtnHandler.bind(this)
+        this.checkboxDisplayHandler = this.checkboxDisplayHandler.bind(this)
+    }
+
     addTaskToUI(task) {
         const container = document.querySelector(DOMstrings.tasksContainer)
         const element = this.getTaskHtmlString(task)
-        container.insertAdjacentHTML('beforeend', element);
-
+        container.insertAdjacentHTML('beforeend', element)
 
         const createdElement = document.getElementById(task.id)
         this.addTaskEventListeners(createdElement)
@@ -23,41 +30,52 @@ class TaskView {
     }
 
     removeTaskFromUI(id) {
-        const element = document.getElementById(id);
-        element.parentNode.removeChild(element);
+        const element = document.getElementById(id)
+        element.parentNode.removeChild(element)
     }
 
     addTaskEventListeners(element) {
-        element.querySelector(DOMstrings.editBtn).addEventListener('click', this.editBtnClickHandler.bind(this));
-        element.querySelector(DOMstrings.deleteBtn).addEventListener('click', TasksController.deleteTask);
+        element.querySelector(DOMstrings.editBtn).addEventListener('click', this.editBtnClickHandler)
+        element.querySelector(DOMstrings.deleteBtn).addEventListener('click', TasksController.deleteTask)
         element.querySelector(DOMstrings.taskCheckbox).addEventListener('animationend', (event) => {
-            TasksController.deleteTask(event, true);
+            TasksController.deleteTask(event, true)
         });
     }
 
 
     editBtnClickHandler(event) {
+        event.stopPropagation()
+
         const editingElement = event.target.closest(".task")
         const value = editingElement.querySelector('.task__name').textContent
 
         const btnsContainer = event.target.closest(DOMstrings.BtnsContainer)
+
+        this.checkboxDisplayHandler(editingElement);
+
         //Replacing buttons 
         btnsContainer.innerHTML = doneExitBtns
 
         //Summary container
-        const taskNameWrapper = document.getElementById(editingElement.id).querySelector(DOMstrings.taskNameWrapper);
+        const taskNameWrapper = document.getElementById(editingElement.id).querySelector(DOMstrings.taskNameWrapper)
         const textSpanHeight = taskNameWrapper.firstElementChild.offsetHeight;
 
-        const editInput = `<textarea class="task__edit-input-text" type="text" autofocus>${value}</textarea>`;
-        taskNameWrapper.innerHTML = editInput;
+        //Adding eventlisteners doneExitBtns
+        document.querySelector(DOMstrings.doneBtn).addEventListener('click', this.updateSummary)
+        document.querySelector(DOMstrings.exitEditBtn).addEventListener('click', (event) => {
+            this.clickOnExitBtnHandler(event, value, taskNameWrapper, btnsContainer)
+        })
+
+        const editInput = `<textarea class="task__edit-input-text " type="text" autofocus>${value}</textarea>`
+        taskNameWrapper.innerHTML = editInput
 
 
         const textArea = taskNameWrapper.firstChild
         textArea.select()
 
         textArea.addEventListener('input', this.inputHandler)
-        textArea.addEventListener('blur', this.updateSummary.bind(this))
-        textArea.addEventListener('keypress', this.keyPressHandler.bind(this));
+        document.addEventListener('click', this.documentClickHandler)
+        textArea.addEventListener('keypress', this.keyPressHandler)
 
         ///Making textarea initial size
         let nextHeight = Math.min(maxTextAreaHeight, textSpanHeight)
@@ -65,19 +83,53 @@ class TaskView {
         textArea.style.height = nextHeight + (2 * textAreaPaddingTop) + 'px'
     }
 
+    checkboxDisplayHandler(editingTask) {
+        const checkbox = editingTask.querySelector(DOMstrings.taskCheckboxContainer)
+        if (checkbox.classList.contains('task__checkbox--hidden')) {
+            checkbox.classList.remove('task__checkbox--hidden')
+        } else {
+            checkbox.classList.add('task__checkbox--hidden')
+        }
+    }
+
+    clickOnExitBtnHandler(event, value, taskNameWrapper, btnsContainer) {
+        const afterExitSpan = ` <span class="task__name">${value}</span>`
+        const taskElement = event.target.closest('.task')
+
+        taskNameWrapper.innerHTML = afterExitSpan
+        btnsContainer.innerHTML = editDeleteBtns
+
+        this.checkboxDisplayHandler(taskElement)
+
+        this.addTaskEventListeners(taskElement)
+        document.removeEventListener('click', this.documentClickHandler)
+
+
+    }
+
+    documentClickHandler(event) {
+        const ignoringElements = ['task__edit-input-text', 'task__btn-done', 'task__btn-exit-edit']
+        const className = event.target.classList[0]
+
+        if (!ignoringElements.includes(className)) {
+            this.updateSummary()
+        }
+    }
 
     inputHandler(event) {
         const value = event.target.value
-        event.target.rows = 1;
-        event.target.style.height = 'auto';
+        event.target.rows = 1
+        event.target.style.height = 'auto'
         if (value === '') {
             event.target.style.height = spanHeightWithOneLine + 'px'
+            event.target.classList.add('task__edit-input-text--invalid')
+
         } else {
             const scrollHeight = event.target.scrollHeight;
             let nextHeight = Math.min(maxTextAreaHeight, scrollHeight)
 
             event.target.style.height = nextHeight + 'px'
-
+            event.target.classList.remove('task__edit-input-text--invalid')
         }
     }
 
@@ -85,28 +137,30 @@ class TaskView {
         if (event.keyCode === 13) {
             event.preventDefault();
             if (event.target.value !== '') {
-                this.updateSummary(event);
+                this.updateSummary(event)
             }
         }
     }
 
-    updateSummary(event) {
-        const value = document.querySelector(DOMstrings.inputForTaskUpdate).value
-        const taskElement = event.target.closest(".task");
+    updateSummary() {
+        const input = document.querySelector(DOMstrings.inputForTaskUpdate)
+        const value = input.value
+        const taskElement = input.closest(".task")
         const id = taskElement.id
 
         const btnsContainer = taskElement.querySelector(DOMstrings.BtnsContainer)
-        const taskNameWrapper = taskElement.querySelector(DOMstrings.taskNameWrapper);
+        const taskNameWrapper = taskElement.querySelector(DOMstrings.taskNameWrapper)
+
+        this.checkboxDisplayHandler(taskElement)
 
         if (value !== '') {
-            event.target.removeEventListener('blur', this.updateSummary)
+            document.removeEventListener('click', this.documentClickHandler)
             const afterEditSpan = ` <span class="task__name">${value}</span>`
             btnsContainer.innerHTML = editDeleteBtns
-            taskNameWrapper.innerHTML = afterEditSpan;
+            taskNameWrapper.innerHTML = afterEditSpan
             this.addTaskEventListeners(taskElement)
-            TasksController.updateTask(id, value);
+            TasksController.updateTask(id, value)
         }
-
     }
 
     getTaskHtmlString(task) {

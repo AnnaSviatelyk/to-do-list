@@ -229,6 +229,10 @@
         input {
             display: none;
         }
+
+        &--hidden {
+            display: none;
+        }
     }
 
     &__checkbox_line {
@@ -265,7 +269,7 @@
 
     &__edit-input-text {
         display: block;
-        width: 454px;
+        width: 480px;
         height: auto;
         overflow: hidden;
 
@@ -281,6 +285,11 @@
         resize: none;
 
         background-color: #f3f3f340;
+        transition: all 0.3s;
+
+        &--invalid {
+            border: 1px solid #f15e50;
+        }
     }
 
     &__btns {

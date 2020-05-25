@@ -14,6 +14,7 @@ export const DOMstrings = {
     editBtnsContainer: '.task__btns--edit',
     exitEditBtn: '.task__btn-exit-edit',
     taskCheckbox: '.task__checkbox_svg',
+    taskCheckboxContainer: '.task__checkbox',
     inputForTaskUpdate: '.task__edit-input-text',
     taskNameWrapper: '.task__name-wrapper',
     time: '.header__data--time',
