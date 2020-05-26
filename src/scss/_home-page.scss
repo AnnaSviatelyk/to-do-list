@@ -83,6 +83,7 @@
     position: fixed;
     bottom: 0;
     right: 71px;
+    pointer-events: none;
 }
 
 .add-new-item {
@@ -197,6 +198,7 @@
         align-items: flex-start;
         justify-content: space-between;
         margin-bottom: 16px;
+        transition: none;
     }
 
     &__description {

@@ -31,21 +31,25 @@ class TaskView {
 
     removeTaskFromUI(id) {
         const element = document.getElementById(id)
-        element.parentNode.removeChild(element)
+        //Animation on delete
+        element.style.marginLeft = '-100px'
+        element.style.opacity = '0'
+        element.style.transition = 'all 0.3s'
+        element.style.transitionTimingFunction = 'cubic-bezier(0.42, 0, 1, 1)'
+
+        setTimeout(() => {
+            element.parentNode.removeChild(element)
+        }, 300)
     }
 
     addTaskEventListeners(element) {
         element.querySelector(DOMstrings.editBtn).addEventListener('click', this.editBtnClickHandler)
         element.querySelector(DOMstrings.deleteBtn).addEventListener('click', TasksController.deleteTask)
-        element.querySelector(DOMstrings.taskCheckbox).addEventListener('animationend', (event) => {
-            TasksController.deleteTask(event, true)
-        });
+        element.querySelector(DOMstrings.taskCheckbox).addEventListener('animationend', TasksController.deleteTask)
     }
 
 
     editBtnClickHandler(event) {
-        event.stopPropagation()
-
         const editingElement = event.target.closest(".task")
         const value = editingElement.querySelector('.task__name').textContent
 
@@ -74,7 +78,7 @@ class TaskView {
         textArea.select()
 
         textArea.addEventListener('input', this.inputHandler)
-        document.addEventListener('click', this.documentClickHandler)
+        document.addEventListener('click', this.documentClickHandler, true)
         textArea.addEventListener('keypress', this.keyPressHandler)
 
         ///Making textarea initial size
@@ -102,9 +106,7 @@ class TaskView {
         this.checkboxDisplayHandler(taskElement)
 
         this.addTaskEventListeners(taskElement)
-        document.removeEventListener('click', this.documentClickHandler)
-
-
+        document.removeEventListener('click', this.documentClickHandler, true)
     }
 
     documentClickHandler(event) {
@@ -154,7 +156,7 @@ class TaskView {
         this.checkboxDisplayHandler(taskElement)
 
         if (value !== '') {
-            document.removeEventListener('click', this.documentClickHandler)
+            document.removeEventListener('click', this.documentClickHandler, true)
             const afterEditSpan = ` <span class="task__name">${value}</span>`
             btnsContainer.innerHTML = editDeleteBtns
             taskNameWrapper.innerHTML = afterEditSpan
